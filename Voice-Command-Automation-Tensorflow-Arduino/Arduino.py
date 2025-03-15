@@ -18,13 +18,13 @@ def record_audio(file_name, duration, sample_rate=16000):
     # Record audio
     print("Recording Audio")
     audio_data = sd.rec(int(duration * sample_rate), samplerate=sample_rate, channels=1, dtype='int16')
-    sd.wait()  # Wait for the recording to complete
+    sd.wait()
     print("Recording complete.")
     
-    # Save the recorded audio to a .wav file
+    # Save the recorded audio as output to a .wav file
     with wave.open(file_name, 'wb') as wf:
         wf.setnchannels(1)  # Mono channel
-        wf.setsampwidth(2)  # 2 bytes per sample (16-bit audio)
+        wf.setsampwidth(2)
         wf.setframerate(sample_rate)
         wf.writeframes(audio_data.tobytes())
     
@@ -45,7 +45,7 @@ def make_spectrogram(wav, sample_rate=16000):
 
     # Convert to Mel Spectrogram (128 Mel bins)
     num_mel_bins = 128
-    num_spectrogram_bins = tf.shape(spectrogram)[-1]  # Dynamically get spectrogram size
+    num_spectrogram_bins = tf.shape(spectrogram)[-1]
 
     # Compute Mel filterbank
     mel_filterbank = tf.signal.linear_to_mel_weight_matrix(
@@ -59,10 +59,8 @@ def make_spectrogram(wav, sample_rate=16000):
     # Apply Mel filter
     mel_spectrogram = tf.tensordot(spectrogram, tf.cast(mel_filterbank, dtype=tf.float32), axes=(-1, 0))
 
-    # Ensure `mel_spectrogram` is at least 3D before resizing
     mel_spectrogram = tf.expand_dims(mel_spectrogram, axis=-1)  # Shape: (Time, Freq, 1)
 
-    # Resize to (128, 128, 1)
     mel_spectrogram = tf.image.resize(mel_spectrogram, (128, 128))
 
     return mel_spectrogram

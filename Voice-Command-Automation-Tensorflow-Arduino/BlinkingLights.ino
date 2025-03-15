@@ -7,8 +7,8 @@ void setup() {
 
 void loop() {
   if (Serial.available() > 0) {
-    String input = Serial.readStringUntil('\n'); // Read input as a string
-    input.trim();  // Remove extra spaces or newline characters
+    String input = Serial.readStringUntil('\n');
+    input.trim();
 
     int number = wordToNumber(input);
 
@@ -20,14 +20,13 @@ void loop() {
         delay(100);
       }
     } else {
-      digitalWrite(Light, LOW);  // Turn off if input is invalid
+      digitalWrite(Light, LOW);
     }
   }
 }
 
-// Function to convert words to numbers
 int wordToNumber(String word) {
-  word.toLowerCase();  // Convert input to lowercase
+  word.toLowerCase();  
 
   if (word == "one") return 1;
   if (word == "two") return 2;
@@ -39,5 +38,5 @@ int wordToNumber(String word) {
   if (word == "eight") return 8;
   if (word == "nine") return 9;
 
-  return 0; // Return 0 for invalid input
+  return 0;
 }
